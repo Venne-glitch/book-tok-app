@@ -13,6 +13,8 @@ section = st.sidebar.radio(
     [
         "Rate a Book",
         "Book Tracker",
+        "Public Rating",
+        "Private Rating",
         "My Book Table"
     ]
 )
@@ -98,7 +100,22 @@ elif section == "Book Tracker":
                 "timestamp": datetime.now()
             })
     st.success(f"Added: {book}")
+elif section == "Public Ratings":
+    st.title("🔓 Public Book Ratings")
+    public_books = [book for book in st.session_state.my_books if book.get("visibility") == "Public"]
 
+    if public_books:
+        st.dataframe(pd.DataFrame(public_books).fillna("-"), use_container_width = True)
+    else:
+        st.info("No public rating available yet.")
+
+elif section == "Private Rating":
+    st.title("🔒 Your Private Book Ratings")
+    private_books = [book for book in st.session_state.my_books if book.get("vivibility") == "Private"]
+    if private_books:
+        st.dataframe(pd.DataFrame(private_books).fillna("-"), use_container_width=True)
+    else:
+        st.info("You have no private ratings saved.")
 # ---------- SECTION: My Book Table ----------
 elif section == "My Book Table":
     st.title("📋 Your Book Table")
